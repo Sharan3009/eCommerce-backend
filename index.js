@@ -42,7 +42,7 @@ fs.readdirSync(routesPath).forEach(function(file){
 app.use(globalErrorMiddleware.globalNotFoundHandler)
 
 //this will connect to port and database
-// will be connecting thourgh http for security concerns
+// we will be connecting thourgh http for security concerns
 // app.listen(appConfig.port,()=>{
 //     console.log(`eCommerce app listening on port ${appConfig.port}`)
 //     mongoose.connect(appConfig.db.uri, { useNewUrlParser : true });
@@ -77,15 +77,15 @@ function onError(error){
 function onListening(){
 	var addr = server.address()
 	var bind = typeof addr === 'string'
-	? 'pipe' + addr
-	: 'port' + addr.port;
+	? 'pipe ' + addr
+	: 'port ' + addr.port;
 	('Listening on ' + bind)
 	logger.info('server listening on port ' + addr.port,'serverOnListeningHandler', 10)
 	let db = mongoose.connect(appConfig.db.uri, { useNewUrlParser : true })
 }
 
 process.on('unhandleRejection',(reason,p)=>{
-	console.log('unhandled rejection at: Promise',p,'reason:',reason)
+	console.log('unhandled rejection at: Promise ',p,'reason: ',reason)
 })
 
 mongoose.connection.on('error',function(err){
