@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const ProductModel = mongoose.model('Product')
+const CommentModel = mongoose.model('Comment')
 const shortid = require('shortid')
 const response = require('../libs/responseLib')
 const time = require('../libs/timeLib')
@@ -30,7 +31,7 @@ let getAllProducts = (req,res) => {
 }
 
 let getSingleProduct = (req,res) => {
-    ProductModel.findOne({ 'prodId' : req.params.productId },(err,result)=>{
+    ProductModel.findOne({ 'prodId' : req.params.prodId },(err,result)=>{
 		if(err){
 			logger.error(err.message, 'Product Controller: getSingleProduct', 10)
 			let apiResponse = response.generate(true,'Error occured while getting Single Product',500,null)
@@ -66,7 +67,6 @@ let createProduct = (req,res) => {
     })
     let otherImgs = (req.body.otherImgs != undefined && req.body.otherImgs != null && req.body.otherImgs !='')?req.body.otherImgs.split(','):[]
     newProduct.otherImgs = otherImgs;
-    let review 
     newProduct.save((err,result)=>{
         if(err){
 			logger.error(err.message, 'Product Controller: createProduct', 10)
@@ -81,7 +81,7 @@ let createProduct = (req,res) => {
 }
 
 let deleteProduct = (req,res) => {
-    ProductModel.remove({ 'prodId' : req.params.productId }, (err,result)=>{
+    ProductModel.remove({ 'prodId' : req.params.prodId }, (err,result)=>{
 		if(err){
 			logger.error(err.message, 'Product Controller: deleteProduct', 10)
 			let apiResponse = response.generate(true,'Error occured while deleting the Product',500,null)
@@ -100,7 +100,7 @@ let deleteProduct = (req,res) => {
 
 let updateProduct = (req,res) => {
     let options = req.body;
-    ProductModel.update({ 'prodId' : req.params.productId },options, { multi : true }, (err,result)=>{
+    ProductModel.update({ 'prodId' : req.params.prodId },options, { multi : true }, (err,result)=>{
 		if(err){
 			logger.error(err.message, 'Product Controller: updateProduct', 10)
 			let apiResponse = response.generate(true,'Error occured while saving the Product',500,null)
@@ -117,10 +117,140 @@ let updateProduct = (req,res) => {
 	})
 }
 
+let addReview = (req,res)=>{
+	let postedTime = time.now()
+	let reviewId = shortid.generate()
+    let newComment = new CommentModel({
+		reviewId : reviewId,
+        name : req.body.name,
+        comment : req.body.comment,
+        rating : req.body.rating,
+        postedTime : postedTime
+    })
+	ProductModel.findOneAndUpdate({ 'prodId' : req.params.prodId },{$push: {reviews : newComment}},{new : true},(err,result)=>{
+		if(err){
+			logger.error(err.message, 'Product Controller: addReview', 10)
+			let apiResponse = response.generate(true,'Error occured while getting Single Product',500,null)
+			res.send(apiResponse)
+		} else if (check.isEmpty(result)){
+			logger.info('No Product Found','Product Controller: addReview',5)
+			let apiResponse = response.generate(true,'No Product Found',404,null)
+			res.send(apiResponse)
+		} else {
+			logger.info('Product Found','Product Controller: addReview',5)
+			let apiResponse = response.generate(false,'Comment successfully added',200,result)
+			res.send(apiResponse)
+		}
+	})
+}
+
+let deleteReview = (req,res)=>{
+	ProductModel.update({ 'prodId' : req.params.prodId },{ $pull : {'reviews' : { 'reviewId' : req.params.reviewId }}}, (err,result)=>{
+		if(err){
+			logger.error(err.message, 'Product Controller: getSingleProduct', 10)
+			let apiResponse = response.generate(true,'Error occured while getting Single Product',500,null)
+			res.send(apiResponse)
+		} else if (check.isEmpty(result)){
+			logger.info('No Product Found','Product Controller: getSingleProduct',5)
+			let apiResponse = response.generate(true,'No Product Found',404,null)
+			res.send(apiResponse)
+		} else {
+			logger.info('Product Found','Product Controller: getSingleProduct',5)
+			let apiResponse = response.generate(false,'Product Found',200,result)
+			res.send(apiResponse)
+		}
+	})
+}
+
+let getProductsByType = (req,res) => {
+    ProductModel.find( { type : req.params.type } )
+	.lean()
+	.exec((err,result)=>{
+		if(err){
+			logger.error(err.message, 'Product Controller: getProductsByType', 10)
+			let apiResponse = response.generate(true,'Error occured while getting all the products',500,null)
+			res.send(apiResponse)
+		} else if (check.isEmpty(result)){
+			logger.info('No Products Found','Product Controller: getProductsByType',5)
+			let apiResponse = response.generate(true,'No Products Found',404,null)
+			res.send(apiResponse)
+		} else {
+			logger.info('Products Found','Product Controller: getProductsByType',5)
+			let apiResponse = response.generate(false,'Products Found',200,result)
+			res.send(apiResponse)
+		}
+	})
+}
+
+let getProductsByCategory = (req,res) => {
+    ProductModel.find( { category : req.params.category } )
+	.lean()
+	.exec((err,result)=>{
+		if(err){
+			logger.error(err.message, 'Product Controller: getProductsByCategory', 10)
+			let apiResponse = response.generate(true,'Error occured while getting all the products',500,null)
+			res.send(apiResponse)
+		} else if (check.isEmpty(result)){
+			logger.info('No Products Found','Product Controller: getProductsByCategory',5)
+			let apiResponse = response.generate(true,'No Products Found',404,null)
+			res.send(apiResponse)
+		} else {
+			logger.info('Products Found','Product Controller: getProductsByCategory',5)
+			let apiResponse = response.generate(false,'Products Found',200,result)
+			res.send(apiResponse)
+		}
+	})
+}
+
+let getProductsBySubcategory = (req,res) => {
+    ProductModel.find( { subCategory : req.params.subCategory } )
+	.lean()
+	.exec((err,result)=>{
+		if(err){
+			logger.error(err.message, 'Product Controller: getProductsBySubcategory', 10)
+			let apiResponse = response.generate(true,'Error occured while getting all the products',500,null)
+			res.send(apiResponse)
+		} else if (check.isEmpty(result)){
+			logger.info('No Products Found','Product Controller: getProductsBySubcategory',5)
+			let apiResponse = response.generate(true,'No Products Found',404,null)
+			res.send(apiResponse)
+		} else {
+			logger.info('Products Found','Product Controller: getProductsBySubcategory',5)
+			let apiResponse = response.generate(false,'Products Found',200,result)
+			res.send(apiResponse)
+		}
+	})
+}
+
+let editComment = (req,res) => {
+	ProductModel.findOneAndUpdate({ 'prodId' : req.params.prodId ,'reviews.reviewId' : req.params.reviewId},{'reviews.$.comment':req.body.comment , 'reviews.$.postedTime': time.now()},{new : true}, (err,result)=>{
+		if(err){
+			logger.error(err.message, 'User Controller: addToCart', 10)
+			let apiResponse = response.generate(true,'Error occured while adding to cart',500,null)
+			res.send(apiResponse)
+		} else if (check.isEmpty(result)){
+			logger.info('No User Found','User Controller: addToCart',5)
+			let apiResponse = response.generate(true,'No User Found',404,null)
+			res.send(apiResponse)
+		} else {
+			logger.info('User Found','User Controller: addToCart',5)
+			let apiResponse = response.generate(false,'Product successfully added to cart',200,result)
+			res.send(apiResponse)
+		}
+	})
+}
+
+
 module.exports = {
     getAllProducts : getAllProducts,
     getSingleProduct : getSingleProduct,
     createProduct : createProduct,
     deleteProduct : deleteProduct,
-    updateProduct : updateProduct
+	updateProduct : updateProduct,
+	addReview : addReview,
+	getProductsByType : getProductsByType,
+	getProductsByCategory : getProductsByCategory,
+	getProductsBySubcategory : getProductsBySubcategory,
+	deleteReview : deleteReview,
+	editComment : editComment
 }

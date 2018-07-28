@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
+const CommentSchema = mongoose.model('Comment')
 
 let productSchema = new Schema({
     prodId : {
@@ -51,7 +52,7 @@ let productSchema = new Schema({
         type : Date,
         default : Date.now
     },
-    reviews : []
+    reviews : [ CommentSchema.schema ]
 })
 
 mongoose.model('Product',productSchema)
