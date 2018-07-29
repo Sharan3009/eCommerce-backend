@@ -8,6 +8,7 @@ const response = require('../libs/responseLib')
 const check = require('../libs/checkLib')
 const logger = require('../libs/loggerLib')
 
+// function add the product into the cart of existing user
 let addToCart = (req,res) => {
     let newCart = new CartModel({
         prodId : req.params.prodId
@@ -29,42 +30,44 @@ let addToCart = (req,res) => {
 	})
 }
 
+// function to increase quantity of the existing product added in the cart
 let increaseQty = (req,res) => {
 	UserModel.findOneAndUpdate({ 'userId' : req.params.userId ,'cart.prodId' : req.params.prodId},{$inc:{'cart.$.quantity':1}},{new : true}, (err,result)=>{
 		if(err){
-			logger.error(err.message, 'User Controller: addToCart', 10)
-			let apiResponse = response.generate(true,'Error occured while adding to cart',500,null)
+			logger.error(err.message, 'User Controller: increaseQty', 10)
+			let apiResponse = response.generate(true,'Error occured while increasing quantity',500,null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)){
-			logger.info('No User Found','User Controller: addToCart',5)
+			logger.info('No User Found','User Controller: increaseQty',5)
 			let apiResponse = response.generate(true,'No User Found',404,null)
 			res.send(apiResponse)
 		} else {
-			logger.info('User Found','User Controller: addToCart',5)
-			let apiResponse = response.generate(false,'Product successfully added to cart',200,result)
+			logger.info('User Found','User Controller: increaseQty',5)
+			let apiResponse = response.generate(false,'Quantity successfully increased',200,result)
 			res.send(apiResponse)
 		}
 	})
 }
-
+ //function to decrease quantity of the existing producct added in the cart
 let decreaseQty = (req,res) => {
 	UserModel.findOneAndUpdate({ 'userId' : req.params.userId ,'cart.prodId' : req.params.prodId},{$inc:{'cart.$.quantity':-1}},{new : true}, (err,result)=>{
 		if(err){
-			logger.error(err.message, 'User Controller: addToCart', 10)
-			let apiResponse = response.generate(true,'Error occured while adding to cart',500,null)
+			logger.error(err.message, 'User Controller: decreaseQty', 10)
+			let apiResponse = response.generate(true,'Error occured while decreasing the quantity',500,null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)){
-			logger.info('No User Found','User Controller: addToCart',5)
+			logger.info('No User Found','User Controller: decreaseQty',5)
 			let apiResponse = response.generate(true,'No User Found',404,null)
 			res.send(apiResponse)
 		} else {
-			logger.info('User Found','User Controller: addToCart',5)
-			let apiResponse = response.generate(false,'Product successfully added to cart',200,result)
+			logger.info('User Found','User Controller: decreaseQty',5)
+			let apiResponse = response.generate(false,'Quantity successfully decreased',200,result)
 			res.send(apiResponse)
 		}
 	})
 }
 
+// function to remove existing product from the cart
 let removeFromCart = (req,res) => {
 	UserModel.update({ 'userId' : req.params.userId },{$pull: {'cart' : { 'prodId' : req.params.prodId }}}, (err,result)=>{
 		if(err){
@@ -83,6 +86,7 @@ let removeFromCart = (req,res) => {
 	})
 }
 
+// function to create user credentials
 let createUser = (req,res) => {
     let userId = shortid.generate();
     let newUser = new UserModel({
@@ -106,8 +110,10 @@ let createUser = (req,res) => {
     })
 }
 
+// function to fetch all the users
 let getAllUsers = (req,res) => {
-    UserModel.find()
+	UserModel.find()
+	.select('-_id -__v')
 	.lean()
 	.exec((err,result)=>{
 		if(err){
@@ -126,8 +132,10 @@ let getAllUsers = (req,res) => {
 	})
 }
 
+// function to get single users using userId
 let getSingleUser = (req,res) => {
-    UserModel.findOne( { userId : req.params.userId })
+	UserModel.findOne( { userId : req.params.userId })
+	.select('-_id -__v')
 	.lean()
 	.exec((err,result)=>{
 		if(err){
@@ -146,12 +154,13 @@ let getSingleUser = (req,res) => {
 	})
 }
 
+// function to update credentials of the users
 let updateCredentials = (req,res) => {
 	let options = req.body;
     UserModel.update({ 'userId' : req.params.userId },options, { multi : true }, (err,result)=>{
 		if(err){
 			logger.error(err.message, 'User Controller: updateCredentials', 10)
-			let apiResponse = response.generate(true,'Error occured while saving the Credentials',500,null)
+			let apiResponse = response.generate(true,'Error occured while updating the Credentials',500,null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)){
 			logger.info('No User Found' ,'User Controller: updateCredentials', 5)
@@ -165,6 +174,7 @@ let updateCredentials = (req,res) => {
 	})
 }
 
+// function to delete the existing user
 let deleteUser = (req,res) => {
     UserModel.remove({ 'userId' : req.params.userId }, (err,result)=>{
 		if(err){
@@ -183,6 +193,7 @@ let deleteUser = (req,res) => {
 	})
 }
 
+// function to add the address in the existing users
 let addAddress = (req,res)=>{
 	let addressId = shortid.generate()
     let newAddress = new AddressModel({
@@ -195,21 +206,22 @@ let addAddress = (req,res)=>{
     })
 	UserModel.findOneAndUpdate({ 'userId' : req.params.userId },{$push: {addresses : newAddress}},{new : true},(err,result)=>{
 		if(err){
-			logger.error(err.message, 'Product Controller: addReview', 10)
-			let apiResponse = response.generate(true,'Error occured while getting Single Product',500,null)
+			logger.error(err.message, 'User Controller: addAddress', 10)
+			let apiResponse = response.generate(true,'Error occured while adding address',500,null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)){
-			logger.info('No Product Found','Product Controller: addReview',5)
-			let apiResponse = response.generate(true,'No Product Found',404,null)
+			logger.info('No User Found','User Controller: addAddress',5)
+			let apiResponse = response.generate(true,'No User Found',404,null)
 			res.send(apiResponse)
 		} else {
-			logger.info('Product Found','Product Controller: addReview',5)
-			let apiResponse = response.generate(false,'Comment successfully added',200,result)
+			logger.info('User Found','User Controller: addAddress',5)
+			let apiResponse = response.generate(false,'address successfully added',200,result)
 			res.send(apiResponse)
 		}
 	})
 }
 
+// function to delete the existing address in the existing users
 let deleteAddress = (req,res)=>{
 	UserModel.update({ 'userId' : req.params.userId },{ $pull : {'addresses' : { 'addressId' : req.params.addressId }}}, (err,result)=>{
 		if(err){

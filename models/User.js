@@ -10,19 +10,19 @@ let userSchema = new Schema({
     },
     firstName : {
         type : String,
-        default : ''
+        required : true
     },
     lastName : {
         type : String,
-        default : ''
+        required : true
     },
     emailId : {
         type : String,
-        default : ''
+        required : true
     },
     password : {
         type : String,
-        default : ''
+        required : true
     },
     cart : [ CartSchema.schema ],
     isPrime : {
@@ -31,7 +31,8 @@ let userSchema = new Schema({
     },
     contactNumber : {
         type : Number,
-        default : 0
+        minlength : 10,
+        maxlength : 10
     },
     addresses : [ AddressSchema.schema ]
 

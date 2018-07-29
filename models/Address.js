@@ -8,23 +8,24 @@ let addressSchema = new Schema({
     },
     houseNo : {
         type : Number,
-        default : 0
+        required : true
     },
     street : {
         type : String,
-        unique : true
+        required : true
     },
     area : {
         type : String,
-        default : ''
+        required : true
     },
     city : {
         type : String,
-        default : ''
+        required : true
     },
     pincode : {
         type : Number,
-        default : 0
+        minlength : 6,
+        maxlength : 6
     }
 })
 mongoose.model('Address',addressSchema)

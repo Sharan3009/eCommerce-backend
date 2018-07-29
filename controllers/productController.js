@@ -11,7 +11,8 @@ const logger = require('../libs/loggerLib')
 //this will not show any products until posted through createProduct or added manually in mongo
 // function to get all products
 let getAllProducts = (req,res) => {
-    ProductModel.find()
+	ProductModel.find()
+	.select('-_id -__v')
 	.lean()
 	.exec((err,result)=>{
 		if(err){
@@ -30,6 +31,7 @@ let getAllProducts = (req,res) => {
 	})
 }
 
+// function to get single product with prodId
 let getSingleProduct = (req,res) => {
     ProductModel.findOne({ 'prodId' : req.params.prodId },(err,result)=>{
 		if(err){
@@ -46,8 +48,10 @@ let getSingleProduct = (req,res) => {
 			res.send(apiResponse)
 		}
 	})
+	.select('-_id -__v')
 }
 
+// function to create new product
 let createProduct = (req,res) => {
 	let prodId = shortid.generate();
 	let productCreated = time.now()
@@ -77,9 +81,10 @@ let createProduct = (req,res) => {
 			let apiResponse = response.generate(false,'Product successfully created',200,result)
 			res.send(apiResponse)
 		}
-    })
+	})
 }
 
+// function to delete the product with prodId
 let deleteProduct = (req,res) => {
     ProductModel.remove({ 'prodId' : req.params.prodId }, (err,result)=>{
 		if(err){
@@ -98,12 +103,13 @@ let deleteProduct = (req,res) => {
 	})
 }
 
+// function to update the product with proId
 let updateProduct = (req,res) => {
     let options = req.body;
     ProductModel.update({ 'prodId' : req.params.prodId },options, { multi : true }, (err,result)=>{
 		if(err){
 			logger.error(err.message, 'Product Controller: updateProduct', 10)
-			let apiResponse = response.generate(true,'Error occured while saving the Product',500,null)
+			let apiResponse = response.generate(true,'Error occured while editing the Product',500,null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)){
 			logger.info('No Product Found' ,'Product Controller: updateProduct', 5)
@@ -117,6 +123,7 @@ let updateProduct = (req,res) => {
 	})
 }
 
+// function to add the review in existing product
 let addReview = (req,res)=>{
 	let postedTime = time.now()
 	let reviewId = shortid.generate()
@@ -130,7 +137,7 @@ let addReview = (req,res)=>{
 	ProductModel.findOneAndUpdate({ 'prodId' : req.params.prodId },{$push: {reviews : newComment}},{new : true},(err,result)=>{
 		if(err){
 			logger.error(err.message, 'Product Controller: addReview', 10)
-			let apiResponse = response.generate(true,'Error occured while getting Single Product',500,null)
+			let apiResponse = response.generate(true,'Error occured while adding the review',500,null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)){
 			logger.info('No Product Found','Product Controller: addReview',5)
@@ -144,26 +151,29 @@ let addReview = (req,res)=>{
 	})
 }
 
+// function to delete existing review in existing product
 let deleteReview = (req,res)=>{
 	ProductModel.update({ 'prodId' : req.params.prodId },{ $pull : {'reviews' : { 'reviewId' : req.params.reviewId }}}, (err,result)=>{
 		if(err){
-			logger.error(err.message, 'Product Controller: getSingleProduct', 10)
-			let apiResponse = response.generate(true,'Error occured while getting Single Product',500,null)
+			logger.error(err.message, 'Product Controller: deleteReview', 10)
+			let apiResponse = response.generate(true,'Error occured while deleting the review',500,null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)){
-			logger.info('No Product Found','Product Controller: getSingleProduct',5)
-			let apiResponse = response.generate(true,'No Product Found',404,null)
+			logger.info('No review Found','Product Controller: deleteReview',5)
+			let apiResponse = response.generate(true,'No review Found',404,null)
 			res.send(apiResponse)
 		} else {
-			logger.info('Product Found','Product Controller: getSingleProduct',5)
-			let apiResponse = response.generate(false,'Product Found',200,result)
+			logger.info('Review Found','Product Controller: deleteReview',5)
+			let apiResponse = response.generate(false,'Review Found',200,result)
 			res.send(apiResponse)
 		}
 	})
 }
 
+// function to get products of the given "Type"
 let getProductsByType = (req,res) => {
-    ProductModel.find( { type : req.params.type } )
+	ProductModel.find( { type : req.params.type } )
+	.select('-_id -__v')
 	.lean()
 	.exec((err,result)=>{
 		if(err){
@@ -182,8 +192,10 @@ let getProductsByType = (req,res) => {
 	})
 }
 
+// function to get products of the given "Category"
 let getProductsByCategory = (req,res) => {
-    ProductModel.find( { category : req.params.category } )
+	ProductModel.find( { category : req.params.category } )
+	.select('-_id -__v')
 	.lean()
 	.exec((err,result)=>{
 		if(err){
@@ -202,8 +214,10 @@ let getProductsByCategory = (req,res) => {
 	})
 }
 
+// function to get products of the given "subCategory"
 let getProductsBySubcategory = (req,res) => {
-    ProductModel.find( { subCategory : req.params.subCategory } )
+	ProductModel.find( { subCategory : req.params.subCategory } )
+	.select('-_id -__v')
 	.lean()
 	.exec((err,result)=>{
 		if(err){
@@ -222,19 +236,20 @@ let getProductsBySubcategory = (req,res) => {
 	})
 }
 
+// function to edit the Comment of existing review in the existing product
 let editComment = (req,res) => {
 	ProductModel.findOneAndUpdate({ 'prodId' : req.params.prodId ,'reviews.reviewId' : req.params.reviewId},{'reviews.$.comment':req.body.comment , 'reviews.$.postedTime': time.now()},{new : true}, (err,result)=>{
 		if(err){
-			logger.error(err.message, 'User Controller: addToCart', 10)
-			let apiResponse = response.generate(true,'Error occured while adding to cart',500,null)
+			logger.error(err.message, 'Product Controller: editComment', 10)
+			let apiResponse = response.generate(true,'Error occured while editing the comment',500,null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)){
-			logger.info('No User Found','User Controller: addToCart',5)
-			let apiResponse = response.generate(true,'No User Found',404,null)
+			logger.info('No Review Found','Product Controller: editComment',5)
+			let apiResponse = response.generate(true,'No Review Found',404,null)
 			res.send(apiResponse)
 		} else {
-			logger.info('User Found','User Controller: addToCart',5)
-			let apiResponse = response.generate(false,'Product successfully added to cart',200,result)
+			logger.info('Review Found','Product Controller: editComment',5)
+			let apiResponse = response.generate(false,'Review successfully edited',200,result)
 			res.send(apiResponse)
 		}
 	})

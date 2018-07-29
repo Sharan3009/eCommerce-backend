@@ -8,15 +8,17 @@ let CommentSchema = new Schema({
         },
         name : {
             type: String,
-            default : ''
+            required : true
         },
         comment : {
             type : String,
-            default : ''
+            required : true
         },
         rating : {
             type : Number,
-            default : 0
+            default : 0,
+            min:0,
+            max:5
         },
         postedTime : {
             type : Date,
