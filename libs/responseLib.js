@@ -1,7 +1,7 @@
 //mandatory library
-let generate = (err,message,status,data) => {
+let generate = (err, message, status, data) => {
 	let response = {
-		error:err,
+		error: err,
 		message: message,
 		status: status,
 		data: data

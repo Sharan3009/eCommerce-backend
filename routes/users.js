@@ -111,7 +111,7 @@ let setRouter = (app) => {
 	 *
 	 * {
 	    "error": true,
-	    "message": "Error occured while getting all the users",
+	    "message": "Error occured while getting the user",
 	    "status": 500,
 	    "data": null
 	   }
@@ -132,7 +132,7 @@ let setRouter = (app) => {
             "status": 200,
             "data": {
                 "n": 1,
-                "nModified": 0,
+                "nModified": 1,
                 "ok": 1
             }
         }
@@ -172,7 +172,6 @@ let setRouter = (app) => {
                 "cart": [
                     {
                         "quantity": 1,
-                        "_id": string,
                         "prodId": string
                     }
                 ],
@@ -189,11 +188,11 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:userId/increaseQty/:prodId' , auth.isAuthenticated , userController.increaseQty)
+    app.post(baseUrl + '/:userId/increaseQty/:prodId', auth.isAuthenticated, userController.increaseQty)
     /**
 	 * @api {post} /api/v1/users/:userId/increaseQty/:prodId Increasing quantity of cart by 1
 	 * @apiVersion 0.0.1
-	 * @apiGroup Create 
+	 * @apiGroup Update 
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} userId userId of the user passed as a route parameter
@@ -216,7 +215,6 @@ let setRouter = (app) => {
                 "cart": [
                     {
                         "quantity": number,
-                        "_id": string,
                         "prodId": string
                     }
                 ],
@@ -228,16 +226,16 @@ let setRouter = (app) => {
 	 *
 	 * {
 	    "error": true,
-	    "message": "Error occured while increasing the quantity",
+	    "message": "Error occured while increasing quantity",
 	    "status": 500,
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:userId/decreaseQty/:prodId' , auth.isAuthenticated , userController.decreaseQty)
+    app.post(baseUrl + '/:userId/decreaseQty/:prodId', auth.isAuthenticated, userController.decreaseQty)
     /**
 	 * @api {post} /api/v1/users/:userId/decreaseQty/:prodId Decreasing quantity of cart by 1
 	 * @apiVersion 0.0.1
-	 * @apiGroup Create 
+	 * @apiGroup Update 
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} userId userId of the user passed as a route parameter
@@ -260,7 +258,6 @@ let setRouter = (app) => {
                 "cart": [
                     {
                         "quantity": number,
-                        "_id": string,
                         "prodId": string
                     }
                 ],
@@ -272,7 +269,7 @@ let setRouter = (app) => {
 	 *
 	 * {
 	    "error": true,
-	    "message": "Error occured while decreasing the quantity",
+	    "message": "Error occured while decreasing quantity",
 	    "status": 500,
 	    "data": null
 	   }
@@ -281,7 +278,7 @@ let setRouter = (app) => {
     /**
 	 * @api {post} /api/v1/users/:userId/removeCart/:prodId Removing Product from cart
 	 * @apiVersion 0.0.1
-	 * @apiGroup Create 
+	 * @apiGroup Delete 
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} userId userId of the user passed as a route parameter
@@ -310,16 +307,16 @@ let setRouter = (app) => {
 	 *
 	 * {
 	    "error": true,
-	    "message": "Error occured while removing product from cart",
+	    "message": "Error occured while removing from cart",
 	    "status": 500,
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/address/:userId' , auth.isAuthenticated , userController.addAddress)
+    app.post(baseUrl + '/address/:userId', auth.isAuthenticated, userController.addAddress)
     /**
 	 * @api {post} /api/v1/users/address/:userId Add address of the user
 	 * @apiVersion 0.0.1
-	 * @apiGroup Create
+	 * @apiGroup Delete
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} userId userId of the user passed as a route parameter
@@ -367,11 +364,11 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:userId/deleteAddress/:addressId' , auth.isAuthenticated , userController.deleteAddress)
+    app.post(baseUrl + '/:userId/deleteAddress/:addressId', auth.isAuthenticated, userController.deleteAddress)
     /**
 	 * @api {post} /api/v1/users/:userId/deleteAddress/:addressId Delete address of the user
 	 * @apiVersion 0.0.1
-	 * @apiGroup Create
+	 * @apiGroup Delete
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} userId userId of the user passed as a route parameter
@@ -380,7 +377,7 @@ let setRouter = (app) => {
 	 *  @apiSuccessExample {json} Success-Response:
      * {
             "error": false,
-            "message": "address successfully added",
+            "message": "address successfully deleted",
             "status": 200,
             "data": {
                 "isPrime": boolean,
@@ -409,7 +406,7 @@ let setRouter = (app) => {
     /**
 	 * @api {post} /api/v1/users/delete/:userId Delete user
 	 * @apiVersion 0.0.1
-	 * @apiGroup Create
+	 * @apiGroup Delete
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} userId userId of the user passed as a route parameter
@@ -436,5 +433,5 @@ let setRouter = (app) => {
 }
 
 module.exports = {
-    setRouter : setRouter
+    setRouter: setRouter
 }

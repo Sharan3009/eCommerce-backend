@@ -4,7 +4,7 @@ const auth = require('../middlewares/auth')
 
 let setRouter = (app) => {
     let baseUrl = appConfig.apiVersion + '/products'
-    app.post(baseUrl + '/create',auth.isAuthenticated, productController.createProduct)
+    app.post(baseUrl + '/create', auth.isAuthenticated, productController.createProduct)
     /**
 	 * @api {post} /api/v1/products/create Create Product
 	 * @apiVersion 0.0.1
@@ -99,47 +99,47 @@ let setRouter = (app) => {
 	   }
 	 */
     app.get(baseUrl + '/view/:prodId', auth.isAuthenticated, productController.getSingleProduct)
-     /**
-	 * @api {get} /api/v1/products/view/:prodId Get Single Product
-	 * @apiVersion 0.0.1
-	 * @apiGroup Read
-	 *
-	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
-     * @apiParam {String} prodId prodId of the product passed as a route parameter
-	 *
-	 *  @apiSuccessExample {json} Success-Response:
-     * 
-     * {
-            "error": false,
-            "message": "Products Found",
-            "status": 200,
-            "data":{
-                    "type": string,
-                    "category": string,
-                    "subCategory": string,
-                    "prodName": string,
-                    "prodBrand": string,
-                    "isFeatured": boolean,
-                    "description": string,
-                    "price": number,
-                    "imgUrl": string,
-                    "otherImgs":object(type = array),
-                    "availability": boolean,
-                    "prodId": string,
-                    "productCreated": string,
-                    "reviews": object(type = array)
-                }   
-        }
-	  @apiErrorExample {json} Error-Response:
-	 *
-	 * {
-	    "error": true,
-	    "message": "Error occured while getting Single product",
-	    "status": 500,
-	    "data": null
-	   }
-	 */
-    app.put(baseUrl + '/edit/:prodId',auth.isAuthenticated, productController.updateProduct)
+    /**
+    * @api {get} /api/v1/products/view/:prodId Get Single Product
+    * @apiVersion 0.0.1
+    * @apiGroup Read
+    *
+    * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
+    * @apiParam {String} prodId prodId of the product passed as a route parameter
+    *
+    *  @apiSuccessExample {json} Success-Response:
+    * 
+    * {
+           "error": false,
+           "message": "Product Found",
+           "status": 200,
+           "data":{
+                   "type": string,
+                   "category": string,
+                   "subCategory": string,
+                   "prodName": string,
+                   "prodBrand": string,
+                   "isFeatured": boolean,
+                   "description": string,
+                   "price": number,
+                   "imgUrl": string,
+                   "otherImgs":object(type = array),
+                   "availability": boolean,
+                   "prodId": string,
+                   "productCreated": string,
+                   "reviews": object(type = array)
+               }   
+       }
+     @apiErrorExample {json} Error-Response:
+    *
+    * {
+       "error": true,
+       "message": "Error occured while getting Single product",
+       "status": 500,
+       "data": null
+      }
+    */
+    app.put(baseUrl + '/edit/:prodId', auth.isAuthenticated, productController.updateProduct)
     /**
 	 * @api {put} /api/v1/products/edit/:prodId Update Product
 	 * @apiVersion 0.0.1
@@ -292,13 +292,14 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/review/:prodId',auth.isAuthenticated, productController.addReview)
+    app.post(baseUrl + '/:userId/review/:prodId', auth.isAuthenticated, productController.addReview)
     /**
-	 * @api {post} /api/v1/products/review/:prodId Create review
+	 * @api {post} /api/v1/products/:userId/review/:prodId Create review
 	 * @apiVersion 0.0.1
 	 * @apiGroup Create
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
+     * @apiParam {String} userId userId of the user adding review passed as a route parameter
      * @apiParam {String} prodId prodId of the product passed as a route parameter
      * @apiParam {String} name name of the product passed as a body parameter
      * @apiParam {String} comment comment of the product passed as a body parameter
@@ -330,7 +331,7 @@ let setRouter = (app) => {
                         "postedTime": string,
                         "_id": string,
                         "reviewId": string,
-                        "name": string,
+                        "userId": string,
                         "comment": string
                     }
                 ],
@@ -346,11 +347,11 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:prodId/editComment/:reviewId',auth.isAuthenticated, productController.editComment)
+    app.post(baseUrl + '/:prodId/editComment/:reviewId', auth.isAuthenticated, productController.editComment)
     /**
 	 * @api {post} /api/v1/products/:prodId/editComment/:reviewId Edit Comment
 	 * @apiVersion 0.0.1
-	 * @apiGroup Create
+	 * @apiGroup Update
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} prodId prodId of the product passed as a route parameter
@@ -360,7 +361,7 @@ let setRouter = (app) => {
 	 *  @apiSuccessExample {json} Success-Response:
      * {
             "error": false,
-            "message": "Comment successfully edited",
+            "message": "Review successfully edited",
             "status": 200,
             "data": {
                 "type": string,
@@ -383,7 +384,7 @@ let setRouter = (app) => {
                         "postedTime": string,
                         "_id": string,
                         "reviewId": string,
-                        "name": string,
+                        "userId": string,
                         "comment": string
                     }
                 ],
@@ -394,16 +395,16 @@ let setRouter = (app) => {
 	 *
 	 * {
 	    "error": true,
-	    "message": "Error occured while editing the review",
+	    "message": "Error occured while editing the comment",
 	    "status": 500,
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:prodId/removeReview/:reviewId',auth.isAuthenticated, productController.deleteReview)
+    app.post(baseUrl + '/:prodId/removeReview/:reviewId', auth.isAuthenticated, productController.deleteReview)
     /**
 	 * @api {post} /api/v1/products/:prodId/removeReview/:reviewId Delete Review
 	 * @apiVersion 0.0.1
-	 * @apiGroup Create
+	 * @apiGroup Delete
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} prodId prodId of the product passed as a route parameter
@@ -412,7 +413,7 @@ let setRouter = (app) => {
 	 *  @apiSuccessExample {json} Success-Response:
      * {
             "error": false,
-            "message": "Comment successfully deleted",
+            "message": "Review deleted",
             "status": 200,
             "data": {
                 "type": string,
@@ -429,16 +430,7 @@ let setRouter = (app) => {
                 "_id": string,
                 "prodId": string,
                 "productCreated": string,
-                "reviews": [
-                    {
-                        "rating": number,
-                        "postedTime": string,
-                        "_id": string,
-                        "reviewId": string,
-                        "name": string,
-                        "comment": string
-                    }
-                ],
+                "reviews": [],
                 "__v": number
             }
         }
@@ -451,36 +443,36 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/delete/:prodId',auth.isAuthenticated, productController.deleteProduct)
-     /**
-	 * @api {post} /api/v1/products/delete/:prodId Delete Product
-	 * @apiVersion 0.0.1
-	 * @apiGroup Create
-	 *
-	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
-     * @apiParam {String} prodId prodId of the product passed as a route parameter
-	 *
-	 *  @apiSuccessExample {json} Success-Response:
-     * {
-            "error": false,
-            "message": "Product successfully deleted",
-            "status": 200,
-            "data": {
-                "n": 1,
-                "ok": 1
-            }
-        }
-	  @apiErrorExample {json} Error-Response:
-	 *
-	 * {
-	    "error": true,
-	    "message": "Error occured saving the product",
-	    "status": 500,
-	    "data": null
-	   }
-	 */
+    app.post(baseUrl + '/delete/:prodId', auth.isAuthenticated, productController.deleteProduct)
+    /**
+    * @api {post} /api/v1/products/delete/:prodId Delete Product
+    * @apiVersion 0.0.1
+    * @apiGroup Delete
+    *
+    * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
+    * @apiParam {String} prodId prodId of the product passed as a route parameter
+    *
+    *  @apiSuccessExample {json} Success-Response:
+    * {
+           "error": false,
+           "message": "Product successfully deleted",
+           "status": 200,
+           "data": {
+               "n": 1,
+               "ok": 1
+           }
+       }
+     @apiErrorExample {json} Error-Response:
+    *
+    * {
+       "error": true,
+       "message": "Error occured while deleting the product",
+       "status": 500,
+       "data": null
+      }
+    */
 }
 
 module.exports = {
-    setRouter : setRouter
+    setRouter: setRouter
 }

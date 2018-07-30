@@ -16,7 +16,7 @@ let convertToLocalTime = (time) => {
 }
 
 module.exports = {
-    now : now,
-    getLocalTime : getLocalTime,
-    convertToLocalTime : convertToLocalTime
+    now: now,
+    getLocalTime: getLocalTime,
+    convertToLocalTime: convertToLocalTime
 }

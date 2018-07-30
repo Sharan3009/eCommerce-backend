@@ -3,56 +3,56 @@ const Schema = mongoose.Schema;
 const CommentSchema = mongoose.model('Comment')
 
 let productSchema = new Schema({
-    prodId : {
-        type : String,
-        unique : true
+    prodId: {
+        type: String,
+        unique: true
     },
-    type : {
-        type : String,
-        default : ''
+    type: {
+        type: String,
+        default: ''
     },
-    category : {
-        type : String,
-        default : ''
+    category: {
+        type: String,
+        default: ''
     },
-    subCategory : {
-        type : String,
-        default : ''
+    subCategory: {
+        type: String,
+        default: ''
     },
-    prodName : {
-        type : String,
-        default : ''
+    prodName: {
+        type: String,
+        default: ''
     },
-    prodBrand : {
-        type : String,
-        default : ''
+    prodBrand: {
+        type: String,
+        default: ''
     },
-    isFeatured : {
-        type : Boolean,
-        default : false
+    isFeatured: {
+        type: Boolean,
+        default: false
     },
-    description : {
-        type : String,
-        default : ''
+    description: {
+        type: String,
+        default: ''
     },
-    price : {
-        type : Number,
-        default : 0
+    price: {
+        type: Number,
+        default: 0
     },
-    imgUrl : {
-        type : String,
-        default : 'https://domain.com/images/no-image-available.jpg'
+    imgUrl: {
+        type: String,
+        default: 'https://domain.com/images/no-image-available.jpg'
     },
-    otherImgs : [],
-    availability : {
-        type : Boolean,
-        default : true
+    otherImgs: [],
+    availability: {
+        type: Boolean,
+        default: true
     },
-    productCreated : {
-        type : Date,
-        default : Date.now
+    productCreated: {
+        type: Date,
+        default: Date.now
     },
-    reviews : [ CommentSchema.schema ]
+    reviews: [CommentSchema.schema]
 })
 
-mongoose.model('Product',productSchema)
+mongoose.model('Product', productSchema)

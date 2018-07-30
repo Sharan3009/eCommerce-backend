@@ -12,7 +12,7 @@ let captureError = (errorMessage, errorOrigin, errorLevel) => {
 		errorOrigin: errorOrigin,
 		errorLevel: errorLevel
 	}
-    //method provided by pino to print on console
+	//method provided by pino to print on console
 	logger.error(errorResponse)
 	return errorResponse
 }
@@ -27,7 +27,7 @@ let captureInfo = (message, origin, importance) => {
 		origin: origin,
 		level: importance
 	}
-    //method provided by pino to print on console
+	//method provided by pino to print on console
 	logger.info(infoMessage)
 	return infoMessage
 }
