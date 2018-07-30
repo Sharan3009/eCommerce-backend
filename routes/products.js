@@ -349,7 +349,7 @@ let setRouter = (app) => {
 	 */
     app.post(baseUrl + '/:prodId/editComment/:reviewId', auth.isAuthenticated, productController.editComment)
     /**
-	 * @api {post} /api/v1/products/:prodId/editComment/:reviewId Edit Comment
+	 * @api {post} /api/v1/products/:prodId/editComment/:reviewId Update Comment
 	 * @apiVersion 0.0.1
 	 * @apiGroup Update
 	 *

@@ -195,6 +195,89 @@
   },
   {
     "type": "post",
+    "url": "/api/v1/users/address/:userId",
+    "title": "Create address of the user",
+    "version": "0.0.1",
+    "group": "Create",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "authToken",
+            "description": "<p>The token for authentication.(Send authToken as query parameter, body parameter or as a header)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>userId of the user passed as a route parameter</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "houseNo",
+            "description": "<p>houseNo of the user passed as a body parameter</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "street",
+            "description": "<p>street of the user passed as a body parameter</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "area",
+            "description": "<p>area of the user passed as a body parameter</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "city",
+            "description": "<p>city of the user passed as a body parameter</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "pincode",
+            "description": "<p>pincode of the user passed as a body parameter</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n            \"error\": false,\n            \"message\": \"address successfully added\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [],\n                \"addresses\": [\n                    {\n                        \"_id\": string,\n                        \"addressId\": string,\n                        \"houseNo\": number,\n                        \"street\": string,\n                        \"area\": string,\n                        \"city\": string,\n                        \"pincode\": number\n                    }\n                ],\n                \"__v\": number\n            }\n        }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "\n{\n\t    \"error\": true,\n\t    \"message\": \"Error occured while adding the address\",\n\t    \"status\": 500,\n\t    \"data\": null\n\t   }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/users.js",
+    "groupTitle": "Create",
+    "name": "PostApiV1UsersAddressUserid"
+  },
+  {
+    "type": "post",
     "url": "/api/v1/users/create",
     "title": "Create User",
     "version": "0.0.1",
@@ -272,7 +355,7 @@
   {
     "type": "post",
     "url": "/api/v1/users/:userId/cart/:prodId",
-    "title": "adding Product to cart",
+    "title": "Create Product in cart",
     "version": "0.0.1",
     "group": "Create",
     "parameter": {
@@ -429,89 +512,6 @@
   },
   {
     "type": "post",
-    "url": "/api/v1/users/address/:userId",
-    "title": "Add address of the user",
-    "version": "0.0.1",
-    "group": "Delete",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "authToken",
-            "description": "<p>The token for authentication.(Send authToken as query parameter, body parameter or as a header)</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "userId",
-            "description": "<p>userId of the user passed as a route parameter</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "houseNo",
-            "description": "<p>houseNo of the user passed as a body parameter</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "street",
-            "description": "<p>street of the user passed as a body parameter</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "area",
-            "description": "<p>area of the user passed as a body parameter</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "city",
-            "description": "<p>city of the user passed as a body parameter</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "pincode",
-            "description": "<p>pincode of the user passed as a body parameter</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"address successfully added\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [],\n                \"addresses\": [\n                    {\n                        \"_id\": string,\n                        \"addressId\": string,\n                        \"houseNo\": number,\n                        \"street\": string,\n                        \"area\": string,\n                        \"city\": string,\n                        \"pincode\": number\n                    }\n                ],\n                \"__v\": number\n            }\n        }",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "\n{\n\t    \"error\": true,\n\t    \"message\": \"Error occured while adding the address\",\n\t    \"status\": 500,\n\t    \"data\": null\n\t   }",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "routes/users.js",
-    "groupTitle": "Delete",
-    "name": "PostApiV1UsersAddressUserid"
-  },
-  {
-    "type": "post",
     "url": "/api/v1/users/delete/:userId",
     "title": "Delete user",
     "version": "0.0.1",
@@ -616,7 +616,7 @@
   {
     "type": "post",
     "url": "/api/v1/users/:userId/removeCart/:prodId",
-    "title": "Removing Product from cart",
+    "title": "Delete Product from cart",
     "version": "0.0.1",
     "group": "Delete",
     "parameter": {
@@ -993,7 +993,7 @@
   {
     "type": "post",
     "url": "/api/v1/products/:prodId/editComment/:reviewId",
-    "title": "Edit Comment",
+    "title": "Update Comment",
     "version": "0.0.1",
     "group": "Update",
     "parameter": {

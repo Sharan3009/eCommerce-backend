@@ -147,7 +147,7 @@ let setRouter = (app) => {
 	 */
     app.post(baseUrl + '/:userId/cart/:prodId', userController.addToCart)
     /**
-	 * @api {post} /api/v1/users/:userId/cart/:prodId adding Product to cart
+	 * @api {post} /api/v1/users/:userId/cart/:prodId Create Product in cart
 	 * @apiVersion 0.0.1
 	 * @apiGroup Create 
 	 *
@@ -276,7 +276,7 @@ let setRouter = (app) => {
 	 */
     app.post(baseUrl + '/:userId/removeCart/:prodId', userController.removeFromCart)
     /**
-	 * @api {post} /api/v1/users/:userId/removeCart/:prodId Removing Product from cart
+	 * @api {post} /api/v1/users/:userId/removeCart/:prodId Delete Product from cart
 	 * @apiVersion 0.0.1
 	 * @apiGroup Delete 
 	 *
@@ -314,9 +314,9 @@ let setRouter = (app) => {
 	 */
     app.post(baseUrl + '/address/:userId', auth.isAuthenticated, userController.addAddress)
     /**
-	 * @api {post} /api/v1/users/address/:userId Add address of the user
+	 * @api {post} /api/v1/users/address/:userId Create address of the user
 	 * @apiVersion 0.0.1
-	 * @apiGroup Delete
+	 * @apiGroup Create
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} userId userId of the user passed as a route parameter
