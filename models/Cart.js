@@ -17,5 +17,5 @@ let cartSchema = new Schema({
     }
 })
 
-cartSchema.index({userId : 1, prodId: 1}, { sparse : true })
+cartSchema.index({userId : 1, prodId: 1}, { unique : true, sparse : true })
 mongoose.model('Cart', cartSchema)
