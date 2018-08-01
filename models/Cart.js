@@ -2,15 +2,19 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 let cartSchema = new Schema({
+    userId : {
+        type: String,
+        required : true
+    },
     prodId: {
         type: String,
-        unique: true
+        required: true
     },
     quantity: {
         type: Number,
         default: 1
     }
-},
-    { _id: false })
-// adding _id:false so that $addToSet doesnt push product if it is already in cart
+})
+
+cartSchema.index({userId : 1, prodId: 1}, { unique : true })
 mongoose.model('Cart', cartSchema)

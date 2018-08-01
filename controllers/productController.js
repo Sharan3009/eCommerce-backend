@@ -125,8 +125,8 @@ let updateProduct = (req, res) => {
 
 // function to add the review in existing product
 let addReview = (req, res) => {
-	let postedTime = time.now()
-	let reviewId = shortid.generate()
+	let postedTime = req.postedTime
+	let reviewId = req.reviewId
 	let newComment = new CommentModel({
 		reviewId: reviewId,
 		userId: req.params.userId,

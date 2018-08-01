@@ -119,7 +119,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/api/v1/products/:userId/review/:prodId",
+    "url": "/api/v1/products/:prodId/review/:userId",
     "title": "Create review",
     "version": "0.0.1",
     "group": "Create",
@@ -146,13 +146,6 @@ define({ "api": [
             "optional": false,
             "field": "prodId",
             "description": "<p>prodId of the product passed as a route parameter</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>name of the product passed as a body parameter</p>"
           },
           {
             "group": "Parameter",
@@ -191,7 +184,7 @@ define({ "api": [
     },
     "filename": "routes/products.js",
     "groupTitle": "Create",
-    "name": "PostApiV1ProductsUseridReviewProdid"
+    "name": "PostApiV1ProductsProdidReviewUserid"
   },
   {
     "type": "post",
@@ -258,7 +251,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"address successfully added\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [],\n                \"addresses\": [\n                    {\n                        \"_id\": string,\n                        \"addressId\": string,\n                        \"houseNo\": number,\n                        \"street\": string,\n                        \"area\": string,\n                        \"city\": string,\n                        \"pincode\": number\n                    }\n                ],\n                \"__v\": number\n            }\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Address successfully added\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": object(type = array),\n                \"addresses\": [\n                    {\n                        \"_id\": string,\n                        \"addressId\": string,\n                        \"houseNo\": number,\n                        \"street\": string,\n                        \"area\": string,\n                        \"city\": string,\n                        \"pincode\": number\n                    }\n                ],\n                \"__v\": number\n            }\n        }",
           "type": "json"
         }
       ]
@@ -334,7 +327,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"User successfully created\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [],\n                \"addresses\": [],\n                \"__v\": number\n            }\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"User successfully created\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": object(type = array),\n                \"addresses\": object(type = array),\n                \"__v\": number\n            }\n        }",
           "type": "json"
         }
       ]
@@ -389,7 +382,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"Product successfully added to cart\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [\n                    {\n                        \"quantity\": 1,\n                        \"prodId\": string\n                    }\n                ],\n                \"addresses\": [],\n                \"__v\": number\n            }\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Product successfully added to cart\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [\n                    {\n                        \"quantity\": 1,\n                        \"prodId\": string\n                    }\n                ],\n                \"addresses\": object(type = array),\n                \"__v\": number\n            }\n        }",
           "type": "json"
         }
       ]
@@ -457,7 +450,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/api/v1/products/:prodId/removeReview/:reviewId",
+    "url": "/api/v1/products/:prodId/deleteReview/:reviewId",
     "title": "Delete Review",
     "version": "0.0.1",
     "group": "Delete",
@@ -492,7 +485,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"Review deleted\",\n            \"status\": 200,\n            \"data\": {\n                \"type\": string,\n                \"category\": string,\n                \"subCategory\": string,\n                \"prodName\": string,\n                \"prodBrand\": string,\n                \"isFeatured\": boolean,\n                \"description\": string,\n                \"price\": number,\n                \"imgUrl\": string,\n                \"otherImgs\": object(type = array),\n                \"availability\": boolean,\n                \"_id\": string,\n                \"prodId\": string,\n                \"productCreated\": string,\n                \"reviews\": [],\n                \"__v\": number\n            }\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Review deleted\",\n            \"status\": 200,\n            \"data\": {\n                \"n\": 1,\n                \"nModified\": 1,\n                \"ok\": 1\n            }\n        }",
           "type": "json"
         }
       ]
@@ -508,7 +501,7 @@ define({ "api": [
     },
     "filename": "routes/products.js",
     "groupTitle": "Delete",
-    "name": "PostApiV1ProductsProdidRemovereviewReviewid"
+    "name": "PostApiV1ProductsProdidDeletereviewReviewid"
   },
   {
     "type": "post",
@@ -595,7 +588,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"address successfully deleted\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [],\n                \"addresses\": [],\n                \"__v\": number\n            }\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Address successfully deleted\",\n            \"status\": 200,\n            \"data\": {\n                \"n\": 1,\n                \"nModified\": 1,\n                \"ok\": 1\n            }\n        }",
           "type": "json"
         }
       ]
@@ -615,7 +608,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/api/v1/users/:userId/removeCart/:prodId",
+    "url": "/api/v1/users/:userId/deleteCart/:prodId",
     "title": "Delete Product from cart",
     "version": "0.0.1",
     "group": "Delete",
@@ -650,7 +643,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"Product successfully removed from cart\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [],\n                \"addresses\": [],\n                \"__v\": number\n            }\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Product successfully removed from cart\",\n            \"status\": 200,\n            \"data\": {\n                \"n\": 1,\n                \"nModified\": 1,\n                \"ok\": 1\n            }\n        }",
           "type": "json"
         }
       ]
@@ -666,7 +659,7 @@ define({ "api": [
     },
     "filename": "routes/users.js",
     "groupTitle": "Delete",
-    "name": "PostApiV1UsersUseridRemovecartProdid"
+    "name": "PostApiV1UsersUseridDeletecartProdid"
   },
   {
     "type": "get",
@@ -712,7 +705,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/v1/products/category/:category",
-    "title": "Get Products of the category",
+    "title": "Get Products by Category",
     "version": "0.0.1",
     "group": "Read",
     "parameter": {
@@ -760,7 +753,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/v1/products/subCategory/:subCategory",
-    "title": "Get Products of the subCategory",
+    "title": "Get Products by SubCategory",
     "version": "0.0.1",
     "group": "Read",
     "parameter": {
@@ -808,7 +801,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/v1/products/type/:type",
-    "title": "Get Products of the type",
+    "title": "Get Products by Type",
     "version": "0.0.1",
     "group": "Read",
     "parameter": {
@@ -924,7 +917,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"Users found\",\n            \"status\": 200,\n            \"data\": [\n                    {\n                    \"isPrime\": boolean,\n                    \"userId\": string,\n                    \"firstName\": string,\n                    \"lastName\": string,\n                    \"emailId\": string,\n                    \"password\": string,\n                    \"contactNumber\": number,\n                    \"cart\": [],\n                    \"addresses\": [],\n                }\n            ]\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Users found\",\n            \"status\": 200,\n            \"data\": [\n                    {\n                    \"isPrime\": boolean,\n                    \"userId\": string,\n                    \"firstName\": string,\n                    \"lastName\": string,\n                    \"emailId\": string,\n                    \"password\": string,\n                    \"contactNumber\": number,\n                    \"cart\": object(type = array),\n                    \"addresses\": object(type = array),\n                }\n            ]\n        }",
           "type": "json"
         }
       ]
@@ -944,7 +937,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/v1/users/user/:userId",
+    "url": "/api/v1/users/view/:userId",
     "title": "Get Single User",
     "version": "0.0.1",
     "group": "Read",
@@ -972,7 +965,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"User found\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [],\n                \"addresses\": [],\n            }\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"User found\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": object(type = array),\n                \"addresses\": object(type = array),\n            }\n        }",
           "type": "json"
         }
       ]
@@ -988,7 +981,7 @@ define({ "api": [
     },
     "filename": "routes/users.js",
     "groupTitle": "Read",
-    "name": "GetApiV1UsersUserUserid"
+    "name": "GetApiV1UsersViewUserid"
   },
   {
     "type": "post",
@@ -1054,6 +1047,61 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/api/v1/users/:userId/address/:addressId",
+    "title": "Update address of the user",
+    "version": "0.0.1",
+    "group": "Update",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "authToken",
+            "description": "<p>The token for authentication.(Send authToken as query parameter, body parameter or as a header)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>userId of the user passed as a route parameter</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "addressId",
+            "description": "<p>addressId of the user passed as a route parameter</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Address successfully updated\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": object(type = array),\n                \"addresses\": [\n                    {\n                        \"_id\": string,\n                        \"addressId\": string,\n                        \"houseNo\": number,\n                        \"street\": string,\n                        \"area\": string,\n                        \"city\": string,\n                        \"pincode\": number\n                    }\n                ],\n                \"__v\": number\n            }\n        }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "\n{\n\t    \"error\": true,\n\t    \"message\": \"Error occured while updating the address\",\n\t    \"status\": 500,\n\t    \"data\": null\n\t   }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/users.js",
+    "groupTitle": "Update",
+    "name": "PostApiV1UsersUseridAddressAddressid"
+  },
+  {
+    "type": "post",
     "url": "/api/v1/users/:userId/decreaseQty/:prodId",
     "title": "Decreasing quantity of cart by 1",
     "version": "0.0.1",
@@ -1089,7 +1137,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"Quantity successfully decreased\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [\n                    {\n                        \"quantity\": number,\n                        \"prodId\": string\n                    }\n                ],\n                \"addresses\": [],\n                \"__v\": number\n            }\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Quantity successfully decreased\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [\n                    {\n                        \"quantity\": number,\n                        \"prodId\": string\n                    }\n                ],\n                \"addresses\": object(type = array),\n                \"__v\": number\n            }\n        }",
           "type": "json"
         }
       ]
@@ -1144,7 +1192,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"Quantity successfully increased\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [\n                    {\n                        \"quantity\": number,\n                        \"prodId\": string\n                    }\n                ],\n                \"addresses\": [],\n                \"__v\": number\n            }\n        }",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Quantity successfully increased\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": [\n                    {\n                        \"quantity\": number,\n                        \"prodId\": string\n                    }\n                ],\n                \"addresses\": object(type = array),\n                \"__v\": number\n            }\n        }",
           "type": "json"
         }
       ]

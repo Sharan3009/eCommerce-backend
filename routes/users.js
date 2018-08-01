@@ -1,10 +1,12 @@
 const userController = require('../controllers/userController');
 const appConfig = require('./../config/appConfig')
 const auth = require('../middlewares/auth')
+const cartDB = require('../middlewares/cartMiddleware')
+const addressDB = require('../middlewares/addressMiddleware')
 
 let setRouter = (app) => {
     let baseUrl = appConfig.apiVersion + '/users'
-    app.post(baseUrl + '/create', userController.createUser)
+    app.post(baseUrl + '/create',auth.isAuthenticated, userController.createUser)
     /**
 	 * @api {post} /api/v1/users/create Create User
 	 * @apiVersion 0.0.1
@@ -31,8 +33,8 @@ let setRouter = (app) => {
                 "emailId": string,
                 "password": string,
                 "contactNumber": number,
-                "cart": [],
-                "addresses": [],
+                "cart": object(type = array),
+                "addresses": object(type = array),
                 "__v": number
             }
         }
@@ -67,8 +69,8 @@ let setRouter = (app) => {
                     "emailId": string,
                     "password": string,
                     "contactNumber": number,
-                    "cart": [],
-                    "addresses": [],
+                    "cart": object(type = array),
+                    "addresses": object(type = array),
                 }
             ]
         }
@@ -81,9 +83,9 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.get(baseUrl + '/user/:userId', auth.isAuthenticated, userController.getSingleUser)
+    app.get(baseUrl + '/view/:userId', auth.isAuthenticated, userController.getSingleUser)
     /**
-	 * @api {get} /api/v1/users/user/:userId Get Single User
+	 * @api {get} /api/v1/users/view/:userId Get Single User
 	 * @apiVersion 0.0.1
 	 * @apiGroup Read 
 	 *
@@ -103,8 +105,8 @@ let setRouter = (app) => {
                 "emailId": string,
                 "password": string,
                 "contactNumber": number,
-                "cart": [],
-                "addresses": [],
+                "cart": object(type = array),
+                "addresses": object(type = array),
             }
         }
 	  @apiErrorExample {json} Error-Response:
@@ -145,7 +147,7 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:userId/cart/:prodId', userController.addToCart)
+    app.post(baseUrl + '/:userId/cart/:prodId',auth.isAuthenticated, cartDB.addToCartDB, userController.addToCart)
     /**
 	 * @api {post} /api/v1/users/:userId/cart/:prodId Create Product in cart
 	 * @apiVersion 0.0.1
@@ -175,7 +177,7 @@ let setRouter = (app) => {
                         "prodId": string
                     }
                 ],
-                "addresses": [],
+                "addresses": object(type = array),
                 "__v": number
             }
         }
@@ -218,7 +220,7 @@ let setRouter = (app) => {
                         "prodId": string
                     }
                 ],
-                "addresses": [],
+                "addresses": object(type = array),
                 "__v": number
             }
         }
@@ -261,7 +263,7 @@ let setRouter = (app) => {
                         "prodId": string
                     }
                 ],
-                "addresses": [],
+                "addresses": object(type = array),
                 "__v": number
             }
         }
@@ -274,9 +276,9 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:userId/removeCart/:prodId', userController.removeFromCart)
+    app.post(baseUrl + '/:userId/deleteCart/:prodId', auth.isAuthenticated, cartDB.removeFromCartDB, userController.removeFromCart)
     /**
-	 * @api {post} /api/v1/users/:userId/removeCart/:prodId Delete Product from cart
+	 * @api {post} /api/v1/users/:userId/deleteCart/:prodId Delete Product from cart
 	 * @apiVersion 0.0.1
 	 * @apiGroup Delete 
 	 *
@@ -290,17 +292,9 @@ let setRouter = (app) => {
             "message": "Product successfully removed from cart",
             "status": 200,
             "data": {
-                "isPrime": boolean,
-                "_id": string,
-                "userId": string,
-                "firstName": string,
-                "lastName": string,
-                "emailId": string,
-                "password": string,
-                "contactNumber": number,
-                "cart": [],
-                "addresses": [],
-                "__v": number
+                "n": 1,
+                "nModified": 1,
+                "ok": 1
             }
         }
 	  @apiErrorExample {json} Error-Response:
@@ -312,7 +306,7 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/address/:userId', auth.isAuthenticated, userController.addAddress)
+    app.post(baseUrl + '/address/:userId', auth.isAuthenticated, addressDB.addToAddressDB, userController.addAddress)
     /**
 	 * @api {post} /api/v1/users/address/:userId Create address of the user
 	 * @apiVersion 0.0.1
@@ -329,7 +323,7 @@ let setRouter = (app) => {
 	 *  @apiSuccessExample {json} Success-Response:
      * {
             "error": false,
-            "message": "address successfully added",
+            "message": "Address successfully added",
             "status": 200,
             "data": {
                 "isPrime": boolean,
@@ -340,7 +334,7 @@ let setRouter = (app) => {
                 "emailId": string,
                 "password": string,
                 "contactNumber": number,
-                "cart": [],
+                "cart": object(type = array),
                 "addresses": [
                     {
                         "_id": string,
@@ -364,7 +358,56 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:userId/deleteAddress/:addressId', auth.isAuthenticated, userController.deleteAddress)
+
+    app.post(baseUrl + '/:userId/editAddress/:addressId', auth.isAuthenticated, addressDB.updateAddressDB, userController.updateAddress)
+    /**
+	 * @api {post} /api/v1/users/:userId/address/:addressId Update address of the user
+	 * @apiVersion 0.0.1
+	 * @apiGroup Update
+	 *
+	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
+     * @apiParam {String} userId userId of the user passed as a route parameter
+     * @apiParam {String} addressId addressId of the user passed as a route parameter
+	 *
+	 *  @apiSuccessExample {json} Success-Response:
+     * {
+            "error": false,
+            "message": "Address successfully updated",
+            "status": 200,
+            "data": {
+                "isPrime": boolean,
+                "_id": string,
+                "userId": string,
+                "firstName": string,
+                "lastName": string,
+                "emailId": string,
+                "password": string,
+                "contactNumber": number,
+                "cart": object(type = array),
+                "addresses": [
+                    {
+                        "_id": string,
+                        "addressId": string,
+                        "houseNo": number,
+                        "street": string,
+                        "area": string,
+                        "city": string,
+                        "pincode": number
+                    }
+                ],
+                "__v": number
+            }
+        }
+	  @apiErrorExample {json} Error-Response:
+	 *
+	 * {
+	    "error": true,
+	    "message": "Error occured while updating the address",
+	    "status": 500,
+	    "data": null
+	   }
+	 */
+    app.post(baseUrl + '/:userId/deleteAddress/:addressId', auth.isAuthenticated, addressDB.removeFromAddressDB, userController.deleteAddress)
     /**
 	 * @api {post} /api/v1/users/:userId/deleteAddress/:addressId Delete address of the user
 	 * @apiVersion 0.0.1
@@ -377,20 +420,12 @@ let setRouter = (app) => {
 	 *  @apiSuccessExample {json} Success-Response:
      * {
             "error": false,
-            "message": "address successfully deleted",
+            "message": "Address successfully deleted",
             "status": 200,
             "data": {
-                "isPrime": boolean,
-                "_id": string,
-                "userId": string,
-                "firstName": string,
-                "lastName": string,
-                "emailId": string,
-                "password": string,
-                "contactNumber": number,
-                "cart": [],
-                "addresses": [],
-                "__v": number
+                "n": 1,
+                "nModified": 1,
+                "ok": 1
             }
         }
 	  @apiErrorExample {json} Error-Response:
@@ -402,6 +437,7 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
+
     app.post(baseUrl + '/delete/:userId', auth.isAuthenticated, userController.deleteUser)
     /**
 	 * @api {post} /api/v1/users/delete/:userId Delete user

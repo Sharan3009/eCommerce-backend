@@ -1,6 +1,7 @@
 const productController = require('../controllers/productController');
 const appConfig = require('./../config/appConfig')
 const auth = require('../middlewares/auth')
+const reviewDB = require('../middlewares/reviewMiddleware')
 
 let setRouter = (app) => {
     let baseUrl = appConfig.apiVersion + '/products'
@@ -171,7 +172,7 @@ let setRouter = (app) => {
 	 */
     app.get(baseUrl + '/type/:type', auth.isAuthenticated, productController.getProductsByType)
     /**
-	 * @api {get} /api/v1/products/type/:type Get Products of the type
+	 * @api {get} /api/v1/products/type/:type Get Products by Type
 	 * @apiVersion 0.0.1
 	 * @apiGroup Read
 	 *
@@ -212,7 +213,7 @@ let setRouter = (app) => {
 	 */
     app.get(baseUrl + '/category/:category', auth.isAuthenticated, productController.getProductsByCategory)
     /**
-	 * @api {get} /api/v1/products/category/:category Get Products of the category
+	 * @api {get} /api/v1/products/category/:category Get Products by Category
 	 * @apiVersion 0.0.1
 	 * @apiGroup Read
 	 *
@@ -253,7 +254,7 @@ let setRouter = (app) => {
 	 */
     app.get(baseUrl + '/subcategory/:subCategory', auth.isAuthenticated, productController.getProductsBySubcategory)
     /**
-	 * @api {get} /api/v1/products/subCategory/:subCategory Get Products of the subCategory
+	 * @api {get} /api/v1/products/subCategory/:subCategory Get Products by SubCategory
 	 * @apiVersion 0.0.1
 	 * @apiGroup Read
 	 *
@@ -292,16 +293,15 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:userId/review/:prodId', auth.isAuthenticated, productController.addReview)
+    app.post(baseUrl + '/:prodId/review/:userId', auth.isAuthenticated, reviewDB.addToReviewDB, productController.addReview)
     /**
-	 * @api {post} /api/v1/products/:userId/review/:prodId Create review
+	 * @api {post} /api/v1/products/:prodId/review/:userId Create review
 	 * @apiVersion 0.0.1
 	 * @apiGroup Create
 	 *
 	 * @apiParam {String} authToken The token for authentication.(Send authToken as query parameter, body parameter or as a header)
      * @apiParam {String} userId userId of the user adding review passed as a route parameter
      * @apiParam {String} prodId prodId of the product passed as a route parameter
-     * @apiParam {String} name name of the product passed as a body parameter
      * @apiParam {String} comment comment of the product passed as a body parameter
      * @apiParam {Number} rating rating of the product passed as a body parameter
 	 *
@@ -347,7 +347,7 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:prodId/editComment/:reviewId', auth.isAuthenticated, productController.editComment)
+    app.post(baseUrl + '/:prodId/editComment/:reviewId', auth.isAuthenticated, reviewDB.updateCommentDB ,productController.editComment)
     /**
 	 * @api {post} /api/v1/products/:prodId/editComment/:reviewId Update Comment
 	 * @apiVersion 0.0.1
@@ -400,9 +400,9 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:prodId/removeReview/:reviewId', auth.isAuthenticated, productController.deleteReview)
+    app.post(baseUrl + '/:prodId/deleteReview/:reviewId', auth.isAuthenticated, reviewDB.removeFromReviewDB, productController.deleteReview)
     /**
-	 * @api {post} /api/v1/products/:prodId/removeReview/:reviewId Delete Review
+	 * @api {post} /api/v1/products/:prodId/deleteReview/:reviewId Delete Review
 	 * @apiVersion 0.0.1
 	 * @apiGroup Delete
 	 *
@@ -416,22 +416,9 @@ let setRouter = (app) => {
             "message": "Review deleted",
             "status": 200,
             "data": {
-                "type": string,
-                "category": string,
-                "subCategory": string,
-                "prodName": string,
-                "prodBrand": string,
-                "isFeatured": boolean,
-                "description": string,
-                "price": number,
-                "imgUrl": string,
-                "otherImgs": object(type = array),
-                "availability": boolean,
-                "_id": string,
-                "prodId": string,
-                "productCreated": string,
-                "reviews": [],
-                "__v": number
+                "n": 1,
+                "nModified": 1,
+                "ok": 1
             }
         }
 	  @apiErrorExample {json} Error-Response:

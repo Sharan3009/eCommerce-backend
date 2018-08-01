@@ -11,9 +11,10 @@ const logger = require('../libs/loggerLib')
 // function add the product into the cart of existing user
 let addToCart = (req, res) => {
 	let newCart = new CartModel({
+		userId : req.params.userId,
 		prodId: req.params.prodId
 	})
-	UserModel.findOneAndUpdate({ 'userId': req.params.userId }, { $addToSet: { cart: newCart } }, { new: true }, (err, result) => {
+	UserModel.findOneAndUpdate({ 'userId': req.params.userId }, { $push: { cart: newCart } }, { new: true }, (err, result) => {
 		if (err) {
 			logger.error(err.message, 'User Controller: addToCart', 10)
 			let apiResponse = response.generate(true, 'Error occured while adding to cart', 500, null)
@@ -38,8 +39,8 @@ let increaseQty = (req, res) => {
 			let apiResponse = response.generate(true, 'Error occured while increasing quantity', 500, null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)) {
-			logger.info('No User Found', 'User Controller: increaseQty', 5)
-			let apiResponse = response.generate(true, 'No User Found', 404, null)
+			logger.info('No User or Product Found', 'User Controller: increaseQty', 5)
+			let apiResponse = response.generate(true, 'No User or Product Found', 404, null)
 			res.send(apiResponse)
 		} else {
 			logger.info('User Found', 'User Controller: increaseQty', 5)
@@ -56,8 +57,8 @@ let decreaseQty = (req, res) => {
 			let apiResponse = response.generate(true, 'Error occured while decreasing the quantity', 500, null)
 			res.send(apiResponse)
 		} else if (check.isEmpty(result)) {
-			logger.info('No User Found', 'User Controller: decreaseQty', 5)
-			let apiResponse = response.generate(true, 'No User Found', 404, null)
+			logger.info('No User or Product Found', 'User Controller: decreaseQty', 5)
+			let apiResponse = response.generate(true, 'No User or Product Found', 404, null)
 			res.send(apiResponse)
 		} else {
 			logger.info('User Found', 'User Controller: decreaseQty', 5)
@@ -195,7 +196,7 @@ let deleteUser = (req, res) => {
 
 // function to add the address in the existing users
 let addAddress = (req, res) => {
-	let addressId = shortid.generate()
+	let addressId = req.addressId
 	let newAddress = new AddressModel({
 		addressId: addressId,
 		houseNo: req.body.houseNo,
@@ -234,7 +235,26 @@ let deleteAddress = (req, res) => {
 			res.send(apiResponse)
 		} else {
 			logger.info('AddressFound', 'User Controller: deleteAddress', 5)
-			let apiResponse = response.generate(false, 'address succuessfully deleted', 200, result)
+			let apiResponse = response.generate(false, 'Address successfully deleted', 200, result)
+			res.send(apiResponse)
+		}
+	})
+}
+
+//function to update address of the user
+let updateAddress = (req, res) => {
+	UserModel.findOneAndUpdate({ 'userId': req.params.userId, 'addresses.addressId': req.params.addressId }, { 'addresses.$.houseNo': req.body.houseNo, 'addresses.$.street': req.body.street, 'addresses.$.area': req.body.area, 'addresses.$.city': req.body.city, 'addresses.$.pincode': req.body.pincode }, { new: true }, (err, result) => {
+		if (err) {
+			logger.error(err.message, 'User Controller: updateAddress', 10)
+			let apiResponse = response.generate(true, 'Error occured while updating the address', 500, null)
+			res.send(apiResponse)
+		} else if (check.isEmpty(result)) {
+			logger.info('No User or Address Found', 'User Controller: updateAddress', 5)
+			let apiResponse = response.generate(true, 'No User or Product Found', 404, null)
+			res.send(apiResponse)
+		} else {
+			logger.info('User Found', 'User Controller: updateAddress', 5)
+			let apiResponse = response.generate(false, 'Address successfully updated', 200, result)
 			res.send(apiResponse)
 		}
 	})
@@ -251,5 +271,6 @@ module.exports = {
 	increaseQty: increaseQty,
 	decreaseQty: decreaseQty,
 	addAddress: addAddress,
-	deleteAddress: deleteAddress
+	deleteAddress: deleteAddress,
+	updateAddress: updateAddress
 }
