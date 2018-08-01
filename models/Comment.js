@@ -4,7 +4,8 @@ const Schema = mongoose.Schema
 let CommentSchema = new Schema({
     reviewId: {
         type: String,
-        unique: true
+        unique: true,
+        sparse:true
     },
     userId: {
         type: String,
@@ -16,7 +17,7 @@ let CommentSchema = new Schema({
     },
     rating: {
         type: Number,
-        default: 0,
+        default: 5,
         min: 0,
         max: 5
     },

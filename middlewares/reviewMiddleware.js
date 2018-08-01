@@ -48,7 +48,7 @@ let removeFromReviewDB = (req, res, next) => {
 }
 
 let updateCommentDB = (req,res,next)=> {
-	CommentModel.findOneAndUpdate({ 'reviewId': req.params.reviewId }, { 'comment': req.body.comment, 'postedTime': time.now() }, { new: true }, { multi: true }, (err, result) => {
+	CommentModel.update({ 'reviewId': req.params.reviewId }, { 'comment': req.body.comment, 'postedTime': time.now() }, { multi: true }, (err, result) => {
 		if (err) {
 			logger.error(err.message, 'Review Middleware: updateCommentDB', 10)
 			let apiResponse = response.generate(true, 'Error occured while editing the comment', 500, null)

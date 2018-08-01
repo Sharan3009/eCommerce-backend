@@ -82,7 +82,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "otherImages",
+            "field": "otherImgs",
             "description": "<p>urls of the product images separated with commas passed as a body parameter</p>"
           },
           {
@@ -1047,61 +1047,6 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/api/v1/users/:userId/address/:addressId",
-    "title": "Update address of the user",
-    "version": "0.0.1",
-    "group": "Update",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "authToken",
-            "description": "<p>The token for authentication.(Send authToken as query parameter, body parameter or as a header)</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "userId",
-            "description": "<p>userId of the user passed as a route parameter</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "addressId",
-            "description": "<p>addressId of the user passed as a route parameter</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n            \"error\": false,\n            \"message\": \"Address successfully updated\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": object(type = array),\n                \"addresses\": [\n                    {\n                        \"_id\": string,\n                        \"addressId\": string,\n                        \"houseNo\": number,\n                        \"street\": string,\n                        \"area\": string,\n                        \"city\": string,\n                        \"pincode\": number\n                    }\n                ],\n                \"__v\": number\n            }\n        }",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "\n{\n\t    \"error\": true,\n\t    \"message\": \"Error occured while updating the address\",\n\t    \"status\": 500,\n\t    \"data\": null\n\t   }",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "routes/users.js",
-    "groupTitle": "Update",
-    "name": "PostApiV1UsersUseridAddressAddressid"
-  },
-  {
-    "type": "post",
     "url": "/api/v1/users/:userId/decreaseQty/:prodId",
     "title": "Decreasing quantity of cart by 1",
     "version": "0.0.1",
@@ -1154,6 +1099,61 @@ define({ "api": [
     "filename": "routes/users.js",
     "groupTitle": "Update",
     "name": "PostApiV1UsersUseridDecreaseqtyProdid"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/users/:userId/editAddress/:addressId",
+    "title": "Update address of the user",
+    "version": "0.0.1",
+    "group": "Update",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "authToken",
+            "description": "<p>The token for authentication.(Send authToken as query parameter, body parameter or as a header)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>userId of the user passed as a route parameter</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "addressId",
+            "description": "<p>addressId of the user passed as a route parameter</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n            \"error\": false,\n            \"message\": \"Address successfully updated\",\n            \"status\": 200,\n            \"data\": {\n                \"isPrime\": boolean,\n                \"_id\": string,\n                \"userId\": string,\n                \"firstName\": string,\n                \"lastName\": string,\n                \"emailId\": string,\n                \"password\": string,\n                \"contactNumber\": number,\n                \"cart\": object(type = array),\n                \"addresses\": [\n                    {\n                        \"_id\": string,\n                        \"addressId\": string,\n                        \"houseNo\": number,\n                        \"street\": string,\n                        \"area\": string,\n                        \"city\": string,\n                        \"pincode\": number\n                    }\n                ],\n                \"__v\": number\n            }\n        }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "\n{\n\t    \"error\": true,\n\t    \"message\": \"Error occured while updating the address\",\n\t    \"status\": 500,\n\t    \"data\": null\n\t   }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/users.js",
+    "groupTitle": "Update",
+    "name": "PostApiV1UsersUseridEditaddressAddressid"
   },
   {
     "type": "post",

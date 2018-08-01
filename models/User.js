@@ -31,8 +31,9 @@ let userSchema = new Schema({
     },
     contactNumber: {
         type: Number,
-        minlength: 10,
-        maxlength: 10
+        min: 1000000000,
+        max: 9999999999,
+        required : true
     },
     addresses: [AddressSchema.schema]
 

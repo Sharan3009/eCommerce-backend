@@ -21,7 +21,7 @@ let setRouter = (app) => {
      * @apiParam {String} description description of the product passed as a body parameter
      * @apiParam {Number} price price of the product passed as a body parameter
      * @apiParam {String} imgUrl imgUrl of the product passed as a body parameter
-     * @apiParam {String} otherImages urls of the product images separated with commas passed as a body parameter
+     * @apiParam {String} otherImgs urls of the product images separated with commas passed as a body parameter
      * @apiParam {Boolean} availability availability of the product passed as a body parameter
 	 *
 	 *  @apiSuccessExample {json} Success-Response:

@@ -190,7 +190,7 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:userId/increaseQty/:prodId', auth.isAuthenticated, userController.increaseQty)
+    app.post(baseUrl + '/:userId/increaseQty/:prodId', auth.isAuthenticated, cartDB.increaseQtyCartDB ,userController.increaseQty)
     /**
 	 * @api {post} /api/v1/users/:userId/increaseQty/:prodId Increasing quantity of cart by 1
 	 * @apiVersion 0.0.1
@@ -233,7 +233,7 @@ let setRouter = (app) => {
 	    "data": null
 	   }
 	 */
-    app.post(baseUrl + '/:userId/decreaseQty/:prodId', auth.isAuthenticated, userController.decreaseQty)
+    app.post(baseUrl + '/:userId/decreaseQty/:prodId', auth.isAuthenticated, cartDB.decreaseQtyCartDB , userController.decreaseQty)
     /**
 	 * @api {post} /api/v1/users/:userId/decreaseQty/:prodId Decreasing quantity of cart by 1
 	 * @apiVersion 0.0.1
@@ -361,7 +361,7 @@ let setRouter = (app) => {
 
     app.post(baseUrl + '/:userId/editAddress/:addressId', auth.isAuthenticated, addressDB.updateAddressDB, userController.updateAddress)
     /**
-	 * @api {post} /api/v1/users/:userId/address/:addressId Update address of the user
+	 * @api {post} /api/v1/users/:userId/editAddress/:addressId Update address of the user
 	 * @apiVersion 0.0.1
 	 * @apiGroup Update
 	 *

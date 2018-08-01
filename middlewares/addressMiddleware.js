@@ -48,7 +48,7 @@ let removeFromAddressDB = (req, res, next) => {
 }
 
 let updateAddressDB = (req, res, next) => {
-	AddressModel.findOneAndUpdate({'addressId' : req.params.addressId },{'houseNo':req.body.houseNo,'street':req.body.street,'area':req.body.area,'city':req.body.city,'pincode':req.body.pincode},{new : true},(err, result) => {
+	AddressModel.update({'addressId' : req.params.addressId },{'houseNo':req.body.houseNo,'street':req.body.street,'area':req.body.area,'city':req.body.city,'pincode':req.body.pincode},{new : true},(err, result) => {
 		if (err) {
 			logger.error(err.message, 'Address Middleware: updateAddressDB', 10)
 			let apiResponse = response.generate(true, 'Error occured while updating the address', 500, null)

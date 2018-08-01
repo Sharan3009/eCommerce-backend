@@ -12,9 +12,10 @@ let cartSchema = new Schema({
     },
     quantity: {
         type: Number,
-        default: 1
+        default: 1,
+        min: 1
     }
 })
 
-cartSchema.index({userId : 1, prodId: 1}, { unique : true })
+cartSchema.index({userId : 1, prodId: 1}, { sparse : true })
 mongoose.model('Cart', cartSchema)

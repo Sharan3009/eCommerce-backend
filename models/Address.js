@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 let addressSchema = new Schema({
     addressId : {
         type : String,
-        unique : true
+        unique : true,
+        sparse : true
     },
     houseNo : {
         type : Number,
@@ -24,8 +25,8 @@ let addressSchema = new Schema({
     },
     pincode : {
         type : Number,
-        minlength : 6,
-        maxlength : 6
+        min : 100000,
+        max : 999999
     }
 })
 mongoose.model('Address',addressSchema)
